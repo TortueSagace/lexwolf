@@ -1,6 +1,6 @@
 import unittest
 from lexwolf import Game
-from lexwolf.models import DummyLexWolf, MinmaxLexWolf
+from lexwolf.minmax import DummyLexWolf, MinmaxLexWolf
 from tqdm import tqdm
 
 class TestLexWolf(unittest.TestCase):
