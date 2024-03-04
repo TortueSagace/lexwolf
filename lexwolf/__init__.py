@@ -1,7 +1,7 @@
 import chess
 import chess.svg
 from random import shuffle
-from lexwolf.minmax import DummyLexWolf, LexWolfCore
+from lexwolf.core import DummyLexWolf, LexWolfCore
 from IPython.display import display, SVG
 
 
