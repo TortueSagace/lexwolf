@@ -34,7 +34,7 @@ class TestLexWolf(unittest.TestCase):
                             DummyLexWolf(random_seed=SEED),
                             MinmaxLexWolf(random_seed=SEED, max_depth=2, center_bonus=0), silence=True)
             win_ratio += game.result
-            print("Win ratio so far is", round(win_ratio / (SEED + 1), 2), "%")
+            print("Win ratio so far is", round(win_ratio / (SEED + 1), 2)*100, "%")
         print(
             f"Win ratio between DummyLexWolf (white) and MinmaxLexWolf with depth 1 (black) over {n_games} games: {win_ratio}")
 
@@ -46,17 +46,18 @@ class TestLexWolf(unittest.TestCase):
 
     def test_minmax_depth_efficiency(self):
         win_ratio = 0
-        n_games = 100
+        n_games = 10
         for i, SEED in enumerate(tqdm(range(n_games))):
             if i % 2:
                 game = Game(False, False,
                             MinmaxLexWolf(random_seed=SEED, max_depth=1),
                             MinmaxLexWolf(random_seed=SEED, max_depth=2), silence=True)
+                win_ratio += game.result
             else:
                 game = Game(False, False,
                             MinmaxLexWolf(random_seed=SEED, max_depth=2),
                             MinmaxLexWolf(random_seed=SEED, max_depth=1), silence=True)
-            win_ratio += game.result
+                win_ratio -= game.result
         print(f"Win ratio between MinmaxLexWolf d1 (white) and MinmaxLexWolf d2 (black) over {n_games} games: {win_ratio}")
 
 """    def test_minmax_depth_efficiency_2(self):

@@ -15,8 +15,8 @@ with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
 # This call to setup() does all the work
 setup(
     name="lexwolf",
-    version="0.1.0",
-    description="A simulation of the RiSC-16 (Ridiculously Simple Computer - 16 bit) processor.",
+    version="0.1.2",
+    description="The LexWolf chess artificial intelligences.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="",
