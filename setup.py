@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 
@@ -15,7 +17,7 @@ with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
 # This call to setup() does all the work
 setup(
     name="lexwolf",
-    version="0.1.4",
+    version="0.2.0",
     description="The LexWolf chess artificial intelligences.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -36,7 +38,7 @@ setup(
     ],
     packages=["lexwolf"],
     include_package_data=True,
-    install_requires=["chess"]
+    install_requires=["chess", "numpy", "math", "random", "time", "pandas", "IPython", "os"]
 )
 
 """

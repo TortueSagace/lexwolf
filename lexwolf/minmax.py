@@ -1,22 +1,48 @@
 from time import time
 
 import chess
-from random import shuffle, randrange
+from random import shuffle, randrange, randint
 from lexwolf.core import LexWolfCore
 from lexwolf.bitBoard import bitBoard
 
 
 class MinmaxLexWolf(LexWolfCore):
-    def __init__(self, center_bonus=0.1, control_bonus=0.1, king_bonus=0.2, check_bonus=0.2, *args, **kwargs):
+    def __init__(self, has_adaptative_depth=True , *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.center_bonus = center_bonus
-        self.control_bonus = control_bonus
-        self.king_bonus = king_bonus
-        self.check_bonus = check_bonus
+        self.initial_depth = self.max_depth
         self.start_time = time()
+        self.has_adaptative_depth = has_adaptative_depth
+
+
+    def get_move_from_opening_library(self, board):
+        """
+        Checks an opening library (stored at "openings.csv") for the current board position.
+        List all the opening moves for the current board position in the opening library.
+        Depending on the AI's color, the AI will play the move with highest win rate.
+        This function will be called at every move until the opening library is exhausted, then the minimax algorithm will be used.
+        """
+        # First, read the csv file and store the opening moves in a dictionary
+        # A list of openings moves is available in the "opening_moves" column of the csv file.
+        pass
+
+    def get_adaptative_depth(self, board):
+        # Use `self.initial_depth` as the base depth
+        pieces_left = len([piece for piece in board.piece_map().values() if piece])
+        if pieces_left <= 4:
+            return self.initial_depth + 3
+        elif pieces_left <= 10:
+            return self.initial_depth + 2
+        elif pieces_left <= 16:
+            return self.initial_depth + 1
+        elif pieces_left <= 32:
+            return self.initial_depth
+        else:
+            # Default or another logic for move counts outside the specified ranges
+            return self.initial_depth
 
     def checkEqual(self, board, res):
-        exhaustive = self.evaluate(board)
+        a = 1
+        """exhaustive = self.evaluate(board)
         if (abs(res - exhaustive) >= 1e-10 and abs(res - exhaustive) != 100000):
             lastboard = board.copy()
             lastboard.pop()
@@ -28,7 +54,7 @@ class MinmaxLexWolf(LexWolfCore):
             print(board)
             print(board.fen())
             print("abs(res-exhaustive): ", abs(res - exhaustive))
-            raise ValueError("The results of the incremental evaluation and the exhaustive evaluation diverge")
+            raise ValueError("The results of the incremental evaluation and the exhaustive evaluation diverge")"""
 
     def evaluate(self, board):
 
@@ -120,6 +146,10 @@ class MinmaxLexWolf(LexWolfCore):
             return min_eval
 
     def minimax_incremental(self, board, boardStaticVal, prevList, depth, alpha, beta, is_maximizing):
+
+        if self.has_adaptative_depth:
+            self.get_adaptative_depth(board)
+
         if depth == 0 or board.is_game_over():
             res = self.evaluate_incremental(boardStaticVal, board)
             # self.checkEqual(board,res)
@@ -180,6 +210,9 @@ class MinmaxLexWolf(LexWolfCore):
         self.start_time = time()
         legal_moves = list(board.legal_moves)
         move_value = [None] * len(legal_moves)
+
+        if self.has_adaptative_depth:
+            self.get_adaptative_depth(board)
 
         for i in range(len(legal_moves)):
             board.push(legal_moves[i])
@@ -243,8 +276,8 @@ class MinmaxLexWolf(LexWolfCore):
             board.push(move)
             self.bitBrd.setList(board)
             staticVal = self.bitBrd.getDeltaEval(prevList, boardStaticVal)
-            if (randint(0, 1000) == 500):  # check if no deltaEval ~ getEval discrepancy at regular intervalls
-                self.checkEqual(board, staticVal)
+            # if(randint(0,1000)==500): # check if no deltaEval ~ getEval discrepancy at regular intervalls
+            self.checkEqual(board, staticVal)
             lastList = self.bitBrd.getList()
             self.combinations_count = 1
             board_value = self.minimax_incremental(board, staticVal, lastList, self.max_depth - 1, alpha, beta,

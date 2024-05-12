@@ -2,6 +2,7 @@ import unittest
 from lexwolf import Game
 from lexwolf.core import DummyLexWolf
 from lexwolf.minmax import MinmaxLexWolf
+from lexwolf.adaptativeminmax import AdaptativeMinmaxLexWolf
 from tqdm import tqdm
 
 class TestLexWolf(unittest.TestCase):
@@ -32,7 +33,7 @@ class TestLexWolf(unittest.TestCase):
         for SEED in tqdm(range(n_games)):
             game = Game(False, False,
                             DummyLexWolf(random_seed=SEED),
-                            MinmaxLexWolf(random_seed=SEED, max_depth=2, center_bonus=0), silence=True)
+                            MinmaxLexWolf(random_seed=SEED, max_depth=3), silence=True)
             win_ratio += game.result
             print("Win ratio so far is", round(win_ratio / (SEED + 1), 2)*100, "%")
         print(

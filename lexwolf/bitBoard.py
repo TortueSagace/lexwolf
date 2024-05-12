@@ -1,6 +1,6 @@
 import chess
 import numpy as np
-from weights import WEIGHTS
+from lexwolf.weights import WEIGHTS
 from lexwolf.structEl import structEl
 from math import floor
 

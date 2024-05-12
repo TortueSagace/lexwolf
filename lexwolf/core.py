@@ -2,6 +2,7 @@ from time import time
 
 import chess
 from random import shuffle, seed, randrange, choices, random
+from lexwolf.bitBoard import bitBoard
 import numpy as np
 
 

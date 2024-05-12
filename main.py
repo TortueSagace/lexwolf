@@ -1,3 +1,3 @@
-import lexwolf.minmax
+from lexwolf import *
 
-help(lexwolf.models.GeneticLexWolf)
+game = Game(True, False, AIblack=AdaptativeMinmaxLexWolf(max_depth=3))
